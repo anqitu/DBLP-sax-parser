@@ -15,13 +15,15 @@ all_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref', \
         'i', 'isbn', 'note', 'number', 'pages', 'publisher', 'school', \
         'series', 'sub', 'sup', 'tt', 'url', 'volume']
 required_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref']
-pub_field_names = ['pubID', 'key', 'title', 'year', 'month']
+pub_field_names = ['pubKey', 'pubTitle', 'pubYear', 'pubMonth']
+author_field_names = ['authorId', 'authorFirstName', 'authorSecondName']
 
 attributes = []
 
 results = {pub_type:[] for pub_type in pub_types}
 article_elements = {}
 pub_structure = []
+author_names = []
 
 xml_elements = set()
 
@@ -36,12 +38,13 @@ field_max_len = {field: 0 for field in all_fields}
 class StreamHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self._charBuffer = []
-        # self._current_pub_type = ''
-        self._current_pub_id = 0
-        self._fields = {}
+        self._current_authorID = ''
+        self._pub_fields = {}
+        self._author_fields = {}
+        self._authoredBy_fields = {}
         self._field_data = None
 
-        self._pub_writer = csv.DictWriter(open(pub_csv_path, 'w'), fieldnames = pub_field_names)
+        self._pub_writer = csv.DictWriter(open(pub_csv_path, 'w'), fieldnames = pub_field_names, delimiter='|')
         self._pub_writer.writeheader()
 
     def _getCharacterData(self):
@@ -61,9 +64,8 @@ class StreamHandler(xml.sax.handler.ContentHandler):
 
     def startElement(self, name, attrs):
         if name in pub_types:
-            self._current_pub_id += 1
-            self._fields = {field: None for field in pub_field_names}
-            self._fields['pubID'] = self._current_pub_id
+            self._pub_fields = {field: None for field in pub_field_names}
+            self._pub_field['key'] = attrs.getValue('key')
 
         #     results[name].append({})
         #     attributes.append(attrs)
@@ -73,9 +75,11 @@ class StreamHandler(xml.sax.handler.ContentHandler):
     def endElement(self, name):
         self._field_data = self._getCharacterData()
         if name in pub_field_names:
-            self._fields[name] = self._field_data
+            self._pub_field[name] = self._field_data
         elif name in pub_types:
             self._pub_writer.writerow(self._fields)
+        if name == 'author':
+            author_names.append(self._field_data)
 
 
         #     results[self._current_pub_type][-1][name] = self._getCharacterData()
@@ -86,7 +90,7 @@ print('{}: Start parsing'.format(datetime.datetime.now()))
 StreamHandler().parse(xml_path)
 print('{}: End parsing'.format(datetime.datetime.now()))
 
-
+author_names
 
 pub_field_counts
 

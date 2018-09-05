@@ -319,28 +319,28 @@
 
 ```
 <article key="journals/cacm/Gentry10" mdate="2010-04-26">
-<author>Craig Gentry</author>
-<title>Computing arbitrary functions of encrypted data.</title>
-<pages>97-105</pages>
-<year>2010</year>
-<volume>53</volume>
-<journal>Commun. ACM</journal>
-<number>3</number>
-<ee>http://doi.acm.org/10.1145/1666420.1666444</ee>
-<url>db/journals/cacm/cacm53.html#Gentry10</url>
+  <author>Craig Gentry</author>
+  <title>Computing arbitrary functions of encrypted data.</title>
+  <pages>97-105</pages>
+  <year>2010</year>
+  <volume>53</volume>
+  <journal>Commun. ACM</journal>
+  <number>3</number>
+  <ee>http://doi.acm.org/10.1145/1666420.1666444</ee>
+  <url>db/journals/cacm/cacm53.html#Gentry10</url>
 </article>
 ```
 
 ```
 <inproceedings key="conf/focs/Yao82a" mdate="2011-10-19">
-<title>Theory and Applications of Trapdoor Functions (Extended Abstract)</title>
-<author>Andrew Chi-Chih Yao</author>
-<pages>80-91</pages>
-<crossref>conf/focs/FOCS23</crossref>
-<year>1982</year>
-<booktitle>FOCS</booktitle>
-<url>db/conf/focs/focs82.html#Yao82a</url>
-<ee>http://doi.ieeecomputersociety.org/10.1109/SFCS.1982.45</ee>
+  <title>Theory and Applications of Trapdoor Functions (Extended Abstract)</title>
+  <author>Andrew Chi-Chih Yao</author>
+  <pages>80-91</pages>
+  <crossref>conf/focs/FOCS23</crossref>
+  <year>1982</year>
+  <booktitle>FOCS</booktitle>
+  <url>db/conf/focs/focs82.html#Yao82a</url>
+  <ee>http://doi.ieeecomputersociety.org/10.1109/SFCS.1982.45</ee>
 </inproceedings>
 ```
 
