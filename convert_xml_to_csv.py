@@ -24,6 +24,7 @@ results = {pub_type:[] for pub_type in pub_types}
 article_elements = {}
 pub_structure = []
 author_names = []
+author_names = []
 
 xml_elements = set()
 
@@ -90,6 +91,7 @@ print('{}: Start parsing'.format(datetime.datetime.now()))
 StreamHandler().parse(xml_path)
 print('{}: End parsing'.format(datetime.datetime.now()))
 
+[name for name in author_names if len(name.split(' ')) > 5]
 author_names
 
 pub_field_counts
