@@ -1,14 +1,15 @@
+# Import libraries
 from xml.sax.handler import ContentHandler
 import xml.sax
 import datetime
 import csv
 
-
+# Configure paths
 # xml_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.xml'
 xml_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.000.xml'
-
 pub_csv_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/publication.csv'
 
+#
 pub_types = ['article', 'inproceedings', 'proceedings', 'book', 'incollection', 'phdthesis', 'mastersthesis', 'www']
 all_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref', \
         'address', 'booktitle', 'cdrom', 'chapter', 'cite', 'editor', 'ee', \

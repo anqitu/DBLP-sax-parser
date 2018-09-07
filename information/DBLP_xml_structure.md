@@ -1,3 +1,209 @@
+```
+Anqis-MacBook-Pro:DBLP-sax-parser anqitu$ python3 check_xml.py
+2018-09-07 23:22:54.505400: Start parsing
+2018-09-07 23:32:37.715997: End parsing
+==================================================
+1. Field relation for each publication
+--------------------------------------------------
+Publication type: article
+        Field   Relation
+0       title     0 or 1
+1      author  0 or many
+2        year     0 or 1
+3       month     0 or 1
+4     journal     0 or 1
+5    crossref     0 or 1
+6   booktitle     0 or 1
+7       cdrom     0 or 1
+8        cite  0 or many
+9      editor  0 or many
+10         ee  0 or many
+11          i  0 or many
+12       note  0 or many
+13     number     0 or 1
+14      pages     0 or 1
+15  publisher     0 or 1
+16        sub  0 or many
+17        sup  0 or many
+18         tt  0 or many
+19        url     0 or 1
+20     volume     0 or 1
+21        key     0 or 1
+--------------------------------------------------
+Publication type: inproceedings
+        Field   Relation
+0       title     0 or 1
+1      author  0 or many
+2        year     0 or 1
+3       month     0 or 1
+4    crossref  0 or many
+5   booktitle     0 or 1
+6       cdrom  0 or many
+7        cite  0 or many
+8      editor  0 or many
+9          ee  0 or many
+10          i  0 or many
+11       note     0 or 1
+12     number     0 or 1
+13      pages     0 or 1
+14        sub  0 or many
+15        sup  0 or many
+16         tt     0 or 1
+17        url  0 or many
+18        key     0 or 1
+--------------------------------------------------
+Publication type: proceedings
+        Field   Relation
+0       title     0 or 1
+1      author     0 or 1
+2        year     0 or 1
+3     journal     0 or 1
+4    crossref     0 or 1
+5     address     0 or 1
+6   booktitle     0 or 1
+7        cite  0 or many
+8      editor  0 or many
+9          ee  0 or many
+10          i     0 or 1
+11       isbn  0 or many
+12       note  0 or many
+13     number     0 or 1
+14      pages     0 or 1
+15  publisher  0 or many
+16     series  0 or many
+17        sub     0 or 1
+18        sup  0 or many
+19        url  0 or many
+20     volume  0 or many
+21        key     0 or 1
+--------------------------------------------------
+Publication type: book
+        Field   Relation
+0       title     0 or 1
+1      author  0 or many
+2        year     0 or 1
+3       month     0 or 1
+4   booktitle     0 or 1
+5       cdrom     0 or 1
+6        cite  0 or many
+7      editor  0 or many
+8          ee  0 or many
+9           i  0 or many
+10       isbn  0 or many
+11       note     0 or 1
+12      pages  0 or many
+13  publisher  0 or many
+14     school  0 or many
+15     series  0 or many
+16        sub     0 or 1
+17        sup     0 or 1
+18        url  0 or many
+19     volume     0 or 1
+20        key     0 or 1
+--------------------------------------------------
+Publication type: incollection
+        Field   Relation
+0       title     0 or 1
+1      author  0 or many
+2        year     0 or 1
+3    crossref     0 or 1
+4   booktitle     0 or 1
+5       cdrom     0 or 1
+6     chapter     0 or 1
+7        cite  0 or many
+8          ee     0 or 1
+9           i  0 or many
+10       note     0 or 1
+11     number     0 or 1
+12      pages     0 or 1
+13  publisher     0 or 1
+14        sub  0 or many
+15        sup  0 or many
+16        url     0 or 1
+17        key     0 or 1
+--------------------------------------------------
+Publication type: phdthesis
+        Field   Relation
+0       title     0 or 1
+1      author  0 or many
+2        year     0 or 1
+3       month     0 or 1
+4          ee  0 or many
+5           i  0 or many
+6        isbn  0 or many
+7        note  0 or many
+8      number     0 or 1
+9       pages  0 or many
+10  publisher     0 or 1
+11     school  0 or many
+12     series     0 or 1
+13        sub  0 or many
+14        sup     0 or 1
+15        url     0 or 1
+16     volume     0 or 1
+17        key     0 or 1
+--------------------------------------------------
+Publication type: mastersthesis
+    Field Relation
+0   title   0 or 1
+1  author   0 or 1
+2    year   0 or 1
+3      ee   0 or 1
+4  school   0 or 1
+5     key   0 or 1
+--------------------------------------------------
+Publication type: www
+        Field   Relation
+0       title     0 or 1
+1      author  0 or many
+2        year     0 or 1
+3    crossref     0 or 1
+4   booktitle     0 or 1
+5        cite  0 or many
+6      editor  0 or many
+7          ee     0 or 1
+8        note  0 or many
+9         url  0 or many
+10        key     0 or 1
+==================================================
+2. Maximum string length for each field
+        Field  Max String Length
+0       title                741
+1      author                 66
+2        year                  4
+3       month                 25
+4     journal                 75
+5    crossref                 38
+6     address                  8
+7   booktitle                206
+8       cdrom                 50
+9     chapter                  2
+10       cite                 47
+11     editor                 47
+12         ee                253
+13          i                462
+14       isbn                 18
+15       note                310
+16     number                 24
+17      pages                 31
+18  publisher                162
+19     school                104
+20     series                135
+21        sub                208
+22        sup                384
+23         tt                 80
+24        url                271
+25     volume                 31
+26        key                  0
+27      mdate                  0
+==================================================
+3. Number of words in Authors' Name
+Possible Number of words: {1, 2, 3, 4, 5, 6, 7, 8, 9}
+Author name with maximum number of words:
+['IEEE Task Force on Interfacing Techniques for Simulation Tools', 'S. V. S. S. N. V. G. K. Murthy', 'S. V. S. S. N. V. G. K. Murthy', 'S. V. S. S. N. V. G. Krishna Murthy', 'Australian Imaging Biomarkers & Lifestyle flagship study of ageing', 'Australian Imaging Biomarkers & Lifestyle flagship study of ageing', 'S. V. S. S. N. V. G. K. Murthy', 'S. V. S. S. N. V. G. Krishna Murthy', 'IEEE Task Force on Interfacing Techniques for Simulation Tools']
+```
+
+
 # DBLP XML Structure
 
 ## pub_types
