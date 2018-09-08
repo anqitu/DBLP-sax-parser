@@ -4,11 +4,12 @@ import xml.sax
 import datetime
 import csv
 import pandas as pd
+import json
 
 # Configure paths
 xml_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.xml'
 # xml_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.000.xml'
-
+json_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.json'
 
 pub_types = ['article', 'inproceedings', 'proceedings', 'book', 'incollection', \
             'phdthesis', 'mastersthesis', 'www']
@@ -18,19 +19,14 @@ all_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref', \
             'series', 'sub', 'sup', 'tt', 'url', 'volume']
 all_attributes = ['key', 'mdate', 'publtype', 'cdate']
 
-attributes = []
-author_names = []
-field_counts = {pub_type:{field: set([]) for field in all_fields} for pub_type in pub_types}
-attribute_counts = {pub_type:{attribute: set([]) for attribute in all_attributes} for pub_type in pub_types}
-string_max_length = {field: 0 for field in (all_fields + all_attributes)}
-
+dblp = {}
 
 class StreamHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self._charBuffer = []
-        self._pub_field_counts = {}
-        self._attribute_counts = {}
-        self._field_data = None
+        self._pub_elements = {}
+        self._pubID = 0
+
 
     def _getCharacterData(self):
 
@@ -49,39 +45,39 @@ class StreamHandler(xml.sax.handler.ContentHandler):
     def startElement(self, name, attrs):
 
         if name in pub_types:
-            self._pub_field_counts = {field: 0 for field in all_fields}
-            self._pub_attribute_counts = {attribute: 0 for attribute in all_attributes}
+            self._pubID += 1
 
-            attributes.append(attrs)
+            self._pub_elements = {}
 
             for attribute in all_attributes:
                 if attribute in attrs.getNames():
-                    self._pub_attribute_counts[attribute] = 1
-                    string_max_length[attribute] = max(string_max_length[attribute], len(attrs.getValue(attribute)))
-
-        elif name in all_fields:
-            self._pub_field_counts[name] += 1
-
+                    self._pub_elements[attribute] = attrs.getValue(attribute)
 
     def endElement(self, name):
 
-        self._field_data = self._getCharacterData()
-
-        if name == 'author':
-            author_names.append(self._field_data)
+        if name in all_fields:
+            if name not in self._pub_elements:
+                self._pub_elements[name] = [self._getCharacterData()]
+            else:
+                self._pub_elements[name].append(self._getCharacterData())
 
         if name in pub_types:
-            for field in all_fields:
-                field_counts[name][field].add(self._pub_field_counts[field])
-            for attribute in all_attributes:
-                attribute_counts[name][attribute].add(self._pub_attribute_counts[attribute])
-        elif name in all_fields:
-            string_max_length[name] = max(string_max_length[name], len(self._field_data))
+            dblp[self._pubID] = self._pub_elements
+
 
 
 print('{}: Start parsing'.format(datetime.datetime.now()))
 StreamHandler().parse(xml_path)
 print('{}: End parsing'.format(datetime.datetime.now()))
+
+
+with open('/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.json', 'w') as outfile:
+    json.dump(dblp, outfile)
+
+
+with open('/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.json') as f:
+    dblp = json.load(f)
+dblp['1']
 
 def map_count(field_count_set):
     if field_count_set == set([0]):

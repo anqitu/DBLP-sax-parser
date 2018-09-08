@@ -9,15 +9,15 @@ import csv
 xml_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.000.xml'
 pub_csv_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/publication.csv'
 
-#
+# table field and field names
 pub_types = ['article', 'inproceedings', 'proceedings', 'book', 'incollection', 'phdthesis', 'mastersthesis', 'www']
-all_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref', \
-        'address', 'booktitle', 'cdrom', 'chapter', 'cite', 'editor', 'ee', \
-        'i', 'isbn', 'note', 'number', 'pages', 'publisher', 'school', \
-        'series', 'sub', 'sup', 'tt', 'url', 'volume']
-required_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref']
-pub_field_names = ['pubKey', 'pubTitle', 'pubYear', 'pubMonth']
-author_field_names = ['authorId', 'authorFirstName', 'authorSecondName']
+
+
+# required_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref']
+# required_attributes = ['key']
+
+pub_fields = ['pubKey', 'pubTitle', 'pubYear', 'pubMonth']
+author_fields = ['authorId', 'authorFirstName', 'authorSecondName']
 
 attributes = []
 
@@ -79,7 +79,7 @@ class StreamHandler(xml.sax.handler.ContentHandler):
         if name in pub_field_names:
             self._pub_field[name] = self._field_data
         elif name in pub_types:
-            self._pub_writer.writerow(self._fields)
+            self._pub_writer.writerow(self._pub_field)
         if name == 'author':
             author_names.append(self._field_data)
 
