@@ -1,0 +1,498 @@
+2018-09-08 09:42:30.345757: Start parsing
+2018-09-08 09:50:32.480795: End parsing
+
+==================================================
+1. Common Fields and Attributes for all publication types
+Common Fields:
+{'year', 'ee', 'title', 'author'}
+Common Attributes:
+{'key', 'mdate'}
+
+==================================================
+2. Field count for each publication
+
+Attributes:
+      index       article          book  incollection inproceedings mastersthesis     phdthesis   proceedings           www
+0     cdate        0 or 1           NaN           NaN           NaN           NaN           NaN           NaN           NaN
+1       key  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1
+2     mdate  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1
+3  publtype        0 or 1        0 or 1        0 or 1        0 or 1           NaN        0 or 1        0 or 1        0 or 1
+
+Fields:
+                article          book  incollection inproceedings mastersthesis     phdthesis   proceedings        www
+address             NaN           NaN           NaN           NaN           NaN           NaN        0 or 1        NaN
+author        0 or many     0 or many     0 or many     0 or many  1 and only 1     0 or many        0 or 1  0 or many
+booktitle        0 or 1        0 or 1  1 and only 1  1 and only 1           NaN           NaN        0 or 1     0 or 1
+cdrom            0 or 1        0 or 1        0 or 1     0 or many           NaN           NaN           NaN        NaN
+chapter             NaN           NaN        0 or 1           NaN           NaN           NaN           NaN        NaN
+cite          0 or many     0 or many     0 or many     0 or many           NaN           NaN     0 or many  0 or many
+crossref         0 or 1           NaN        0 or 1     0 or many           NaN           NaN        0 or 1     0 or 1
+editor        0 or many     0 or many           NaN     0 or many           NaN           NaN     0 or many  0 or many
+ee            0 or many     0 or many        0 or 1     0 or many        0 or 1     0 or many     0 or many     0 or 1
+i             0 or many     0 or many     0 or many     0 or many           NaN     0 or many        0 or 1        NaN
+isbn                NaN     0 or many           NaN           NaN           NaN     0 or many     0 or many        NaN
+journal          0 or 1           NaN           NaN           NaN           NaN           NaN        0 or 1        NaN
+month            0 or 1        0 or 1           NaN        0 or 1           NaN        0 or 1           NaN        NaN
+note          0 or many        0 or 1        0 or 1        0 or 1           NaN     0 or many     0 or many  0 or many
+number           0 or 1           NaN        0 or 1        0 or 1           NaN        0 or 1        0 or 1        NaN
+pages            0 or 1     0 or many        0 or 1        0 or 1           NaN     0 or many        0 or 1        NaN
+publisher        0 or 1     0 or many        0 or 1           NaN           NaN        0 or 1     0 or many        NaN
+school              NaN     0 or many           NaN           NaN  1 and only 1     0 or many           NaN        NaN
+series              NaN     0 or many           NaN           NaN           NaN        0 or 1     0 or many        NaN
+sub           0 or many        0 or 1     0 or many     0 or many           NaN     0 or many        0 or 1        NaN
+sup           0 or many        0 or 1     0 or many     0 or many           NaN        0 or 1     0 or many        NaN
+title      1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1     0 or 1
+tt            0 or many           NaN           NaN        0 or 1           NaN           NaN           NaN        NaN
+url              0 or 1     0 or many  1 and only 1     0 or many           NaN        0 or 1     0 or many  0 or many
+volume           0 or 1        0 or 1           NaN           NaN           NaN        0 or 1     0 or many        NaN
+year             0 or 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1     0 or 1
+
+
+--------------------------------------------------
+Publication type: article
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+2   publtype        0 or 1
+3      cdate        0 or 1
+
+       Fields         Count
+0       title  1 and only 1
+1      author     0 or many
+2        year        0 or 1
+3       month        0 or 1
+4     journal        0 or 1
+5    crossref        0 or 1
+6   booktitle        0 or 1
+7       cdrom        0 or 1
+8        cite     0 or many
+9      editor     0 or many
+10         ee     0 or many
+11          i     0 or many
+12       note     0 or many
+13     number        0 or 1
+14      pages        0 or 1
+15  publisher        0 or 1
+16        sub     0 or many
+17        sup     0 or many
+18         tt     0 or many
+19        url        0 or 1
+20     volume        0 or 1
+--------------------------------------------------
+Publication type: inproceedings
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+2   publtype        0 or 1
+
+       Fields         Count
+0       title  1 and only 1
+1      author     0 or many
+2        year  1 and only 1
+3       month        0 or 1
+4    crossref     0 or many
+5   booktitle  1 and only 1
+6       cdrom     0 or many
+7        cite     0 or many
+8      editor     0 or many
+9          ee     0 or many
+10          i     0 or many
+11       note        0 or 1
+12     number        0 or 1
+13      pages        0 or 1
+14        sub     0 or many
+15        sup     0 or many
+16         tt        0 or 1
+17        url     0 or many
+--------------------------------------------------
+Publication type: proceedings
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+2   publtype        0 or 1
+
+       Fields         Count
+0       title  1 and only 1
+1      author        0 or 1
+2        year  1 and only 1
+3     journal        0 or 1
+4    crossref        0 or 1
+5     address        0 or 1
+6   booktitle        0 or 1
+7        cite     0 or many
+8      editor     0 or many
+9          ee     0 or many
+10          i        0 or 1
+11       isbn     0 or many
+12       note     0 or many
+13     number        0 or 1
+14      pages        0 or 1
+15  publisher     0 or many
+16     series     0 or many
+17        sub        0 or 1
+18        sup     0 or many
+19        url     0 or many
+20     volume     0 or many
+--------------------------------------------------
+Publication type: book
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+2   publtype        0 or 1
+
+       Fields         Count
+0       title  1 and only 1
+1      author     0 or many
+2        year  1 and only 1
+3       month        0 or 1
+4   booktitle        0 or 1
+5       cdrom        0 or 1
+6        cite     0 or many
+7      editor     0 or many
+8          ee     0 or many
+9           i     0 or many
+10       isbn     0 or many
+11       note        0 or 1
+12      pages     0 or many
+13  publisher     0 or many
+14     school     0 or many
+15     series     0 or many
+16        sub        0 or 1
+17        sup        0 or 1
+18        url     0 or many
+19     volume        0 or 1
+--------------------------------------------------
+Publication type: incollection
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+2   publtype        0 or 1
+
+       Fields         Count
+0       title  1 and only 1
+1      author     0 or many
+2        year  1 and only 1
+3    crossref        0 or 1
+4   booktitle  1 and only 1
+5       cdrom        0 or 1
+6     chapter        0 or 1
+7        cite     0 or many
+8          ee        0 or 1
+9           i     0 or many
+10       note        0 or 1
+11     number        0 or 1
+12      pages        0 or 1
+13  publisher        0 or 1
+14        sub     0 or many
+15        sup     0 or many
+16        url  1 and only 1
+--------------------------------------------------
+Publication type: phdthesis
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+2   publtype        0 or 1
+
+       Fields         Count
+0       title  1 and only 1
+1      author     0 or many
+2        year  1 and only 1
+3       month        0 or 1
+4          ee     0 or many
+5           i     0 or many
+6        isbn     0 or many
+7        note     0 or many
+8      number        0 or 1
+9       pages     0 or many
+10  publisher        0 or 1
+11     school     0 or many
+12     series        0 or 1
+13        sub     0 or many
+14        sup        0 or 1
+15        url        0 or 1
+16     volume        0 or 1
+--------------------------------------------------
+Publication type: mastersthesis
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+
+   Fields         Count
+0   title  1 and only 1
+1  author  1 and only 1
+2    year  1 and only 1
+3      ee        0 or 1
+4  school  1 and only 1
+--------------------------------------------------
+Publication type: www
+
+  Attributes         Count
+0        key  1 and only 1
+1      mdate  1 and only 1
+2   publtype        0 or 1
+
+      Fields      Count
+0      title     0 or 1
+1     author  0 or many
+2       year     0 or 1
+3   crossref     0 or 1
+4  booktitle     0 or 1
+5       cite  0 or many
+6     editor  0 or many
+7         ee     0 or 1
+8       note  0 or many
+9        url  0 or many
+
+==================================================
+3. Maximum length for each string element
+        Field  Max String Length
+0       title                741
+1      author                 66
+2        year                  4
+3       month                 25
+4     journal                 75
+5    crossref                 38
+6     address                  8
+7   booktitle                206
+8       cdrom                 50
+9     chapter                  2
+10       cite                 47
+11     editor                 47
+12         ee                253
+13          i                462
+14       isbn                 18
+15       note                310
+16     number                 24
+17      pages                 31
+18  publisher                162
+19     school                104
+20     series                135
+21        sub                208
+22        sup                384
+23         tt                 80
+24        url                271
+25     volume                 31
+26        key                 63
+27      mdate                 10
+28   publtype                 18
+29      cdate                 10
+
+==================================================
+4. Number of words in Authors' Name
+
+--------------------------------------------------
+Occurance of each possible number of words:
+   Name Word Count  Occurance
+6                1       5041
+0                2   10709896
+1                3    3524960
+2                4     376536
+3                5      51691
+4                6       8448
+5                7        962
+7                8        115
+8                9          9
+
+--------------------------------------------------
+Author name with 1 words:
+	Budiono
+	Pragyesh
+	Adeel-ur-Rehman
+	Suyanta
+	Urjit
+	Khairudin
+	Julius
+	Shamathmika
+	Suparno
+	Nagarathna
+	Vinita
+	Firdaus
+	Xiuqin
+	Tandiono
+	Shahnawaz
+	Wangping
+	Pratibha
+	Sarula
+	Dewiani
+	Satyam
+
+--------------------------------------------------
+Author name with 2 words:
+	Paola Zuddas
+	Aurore Menegaux
+	Sadaqat Jan
+	Dragan Tubic
+	Mengchao Yue
+	Tarik Eltaeib
+	Jori Paananen
+	Prathap Ramamurphy
+	Eusebi Jarauta-Bragulat
+	Amos Salerno
+	Etsuo Inoue
+	S. Gujar
+	Jiazhen Lu
+	Ben Niven-Jenkins
+	Shang-Hua Xiong
+	Haidong Chen
+	Sayed Abdel-Khalek
+	H. Abbasian
+	Kuk-Jin Bae
+	Hau Tran
+
+--------------------------------------------------
+Author name with 3 words:
+	David N. Armstrong
+	Soumya C. Kambhampati
+	Yu. V. Kornienko
+	Murad Ali Shah
+	T. H. Kim
+	Erwin J. Blas
+	Reiner Kraft 0001
+	Hao Liu 0004
+	Dilip Kumar Saikia
+	Peter E. Clark
+	Jeremiah P. Ostriker
+	Jared M. Sagendorf
+	Cristiana Gomes Huiban
+	Valter Hugo Guandaline
+	Nickolas D. Charistos
+	Y. Z. Chen
+	Phillip J. Rossman
+	Ana Luiza Machado
+	Monica A. Slavin
+	B. M. Galloway
+
+--------------------------------------------------
+Author name with 4 words:
+	Adicinéia Aparecida de Oliveira
+	Christopher X. S. Zee
+	Syed Muhammad Kumail Naqvi
+	Ray W. M. Kong
+	James B. Baty II
+	Mohammad T. Manzuri Shalmani
+	Dennis J. J. Walvoort
+	Armin van der Togt
+	Mats R. K. Lindstedt
+	Lam Si Tung Ho
+	Tan Mon Kiat Trevor
+	M. A. K. Bulelzai
+	Jackie Chi Kit Cheung
+	Alexis Paolo García Ariza
+	Kristen L. Sanford Bernhardt
+	Anria Sophia van Zyl
+	Regiane D. S. Bassi
+	Ricardo Silva The Pontes
+	Edwin P. F. Kan
+	Ahmed Mohamed Fahmy Yousef
+
+--------------------------------------------------
+Author name with 5 words:
+	Frank W. J. M. Smeenk
+	Juracy Emanuel M. da Franca
+	J. V. P. G. Flores
+	V. V. R. Maheswara Rao
+	Rubem J. V. de Medeiros
+	Paulo Sergio da Silva Borges
+	Carla A. D. M. Delgado
+	Mathieu J. P. M. Lemmens
+	R. S. A. Raja Abdullah
+	Erna H. J. M. Ruijer
+	Manoel Henrique da Nobrega Marinho
+	Mohamed Dâfir Ech-Cherif El Kettani
+	Arinei C. L. da Silva
+	B. V. N. S. Prasad
+	Asturias De Leon Diego Jose
+	Thijs A. C. van Keulen
+	S. S. M. Sadrul Huda
+	Grazielle Isabele Cristina Silva Sucupira
+	M. V. S. S. Giridhar
+	Ellen R. A. de Bruijn
+
+--------------------------------------------------
+Author name with 6 words:
+	Naga Raghavendra Surya Vara Prasad Koppisetti
+	Tarek Helmi Abd el-Nabi Ali Ahmed
+	Bram J. J. van der Vlist
+	K. D. N. V. S. Prasad
+	Michael E. F. H. S. Machado
+	Dennis J. M. J. de Baar
+	Frans C. T. van der Helm
+	E. G. J. M. H. Nöcker
+	A. E. M. van den Bosch
+	L. T. C. Bart J. Harmon
+	M. S. V. S. Bhadri Raju
+	Karen L. van Oudenhoven-van der Zee
+	Ives Fernando Martins Santos de Moura
+	Wamberto Weber Miranda Peixoto de Vasconcelos
+	Mirna Du Ry van Beest Holle
+	M. B. M. B. K. Gawarammana
+	Jan H. E. van der Starre
+	María de las Mercedes Macías García
+	Wan Siti Halimatul Munirah Wan Ahmad
+	Josine G. M. van de Ven
+
+--------------------------------------------------
+Author name with 7 words:
+	Rita de Cássia da Silveira Marconcini Bittar
+	Jan Martijn E. M. van der Werf
+	Dré A. J. M. van den Elshout
+	J. J. G. M. van der Tol
+	T. Diana L. v. A. de Macedo-Soares
+	Emile W. J. M. van der Drift
+	R. E. C. M. van der Heijden
+	Ana Paula de Frias Viegas Proença Rocha
+	Chandra Mouli Paturu Venkata Subbu Sita Rama
+	C. W. Rabiatul Adawiyah C. W. Kamal
+	Regina de Fátima Fructuoso de Andrade Bolzan
+	João Manuel da Costa Rodrigues de Oliveira
+	Sergio Roberto de Lima e Silva Filho
+	Raja Shahrom Nizam Shah Bin Raja Shoib
+	M. N. S. S. K. Pavan Kumar
+	Ana Lydia Reis de Castro e Silva
+	Dennis W. J. M. van de Wouw
+	Fátima de Lourdes dos Santos Nunes Marques
+	José Gonçalo A. Oliveira Basto da Silva
+	Walter A. C. A. J. de Hoon
+
+--------------------------------------------------
+Author name with 8 words:
+	Maria José Alves do Rio Perestrelo de Vasconcelos
+	André Carlos Ponce de Leon Ferreira de Carvalho
+	Maria Luísa Torres Ribeiro Marques da Silva Coheur
+	J. Fernando dos Santos Fradinho Duarte de Oliveira
+	A. K. Hairul Nizam H. J. HJ Ali
+	Ma. de los Ángeles Marrujo De la Cruz
+	Anneliene A. L. F. M. van den Boom
+	Pedro Henrique de Rodrigues Quemel e Assis Santana
+	Maria de Fatima Ridolfi Ordine Pires da Silva
+	Maria Elizabeth Bianconcini Trindade Morato Pinto de Almeida
+	Maria Carolina Borim do Nascimento Rodrigues de Souza
+	João José da Cunha e Silva Pinto Ferreira
+	Jesús David Sánchez de Pablo González del Campo
+	Science of Variation Group & Traumaplatform Study Collaborative
+	P. W. G. R. M. P. B. Giragama
+	Jean J. M. C. H. de la Rosette
+	Tummalapalli J. V. R. K. M. K. Sayi
+	Jorge Nuno de Almeida e Sousa Almada Lobo
+	Cesar Analide de Freitase Silva da Costa Rodrigues
+	Gwendid T. van der Voort van der Kleij
+
+--------------------------------------------------
+Author name with 9 words:
+	Australian Imaging Biomarkers & Lifestyle flagship study of ageing
+	S. V. S. S. N. V. G. K. Murthy
+	S. V. S. S. N. V. G. Krishna Murthy
+	IEEE Task Force on Interfacing Techniques for Simulation Tools
+
+==================================================
+5. Check duplicated keys
+Length of Attributes: 6447946
+Length of Unique Attributes: 6447946
+There is no duplicated keys
