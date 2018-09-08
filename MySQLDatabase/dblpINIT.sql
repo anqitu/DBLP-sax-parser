@@ -30,8 +30,10 @@ PRIMARY KEY (aliasId));
 
 CREATE TABLE PERSON(
 personId				INT     			AUTO_INCREMENT,
-primaryAliasId			INT	    			NOT NULL,
+personKey				VARCHAR(150)		,
+primaryAliasId			INT	    			,
 
+CONSTRAINT UNIQUE (personKey),
 PRIMARY KEY (personId),
 FOREIGN KEY (primaryAliasId) REFERENCES ALIAS(aliasId));
 
@@ -98,7 +100,7 @@ CREATE TABLE BOOK(
 pubKey				VARCHAR(150)			,
 bookTitle			VARCHAR(500)	    	,
 bookSeries			VARCHAR(200)			,
-bookISBN			CHAR(18)				NOT NULL,
+bookISBN			CHAR(18)				,
 
 CONSTRAINT UNIQUE (bookISBN),
 PRIMARY KEY (pubKey),
