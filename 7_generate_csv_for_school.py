@@ -55,16 +55,19 @@ authorship_attributes = ['pubKey', 'personId']
 editorship_attributes = ['pubKey', 'personId']
 citership_attributes = ['citingPubKey', 'citedPubKey']
 
-# tables to be created ---------------------------------------------------------
-publishers = []
-schools = []
-aliases = []
 
 class StreamHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self._charBuffer = []
         self._field_data = None
-        self._field_data = None
+        self._key = None
+        self._is_publication = False
+
+        self._pub_count = 0
+
+        self._pub_school_writer = csv.DictWriter(open(pub_school_csv_path, 'w'), fieldnames = ['pubKey', 'schoolName'], delimiter = '|')
+        self._pub_school_writer.writeheader()
+
 
     def _getCharacterData(self):
         data = ''.join(self._charBuffer).strip()
@@ -78,44 +81,43 @@ class StreamHandler(xml.sax.handler.ContentHandler):
         self._charBuffer.append(data)
 
     def startElement(self, name, attrs):
-        pass
+
+        if name in pub_types and not (name == 'www' and ('homepages' in attrs.getValue('key') or 'persons' in attrs.getValue('key'))):
+
+            self._is_publication = True
+            self._key = attrs.getValue('key')
+
+            self._pub_count += 1
+            if self._pub_count % 100000 == 0:
+                print('Current count: {}'.format(self._pub_count))
 
     def endElement(self, name):
+
         self._field_data = self._getCharacterData()
 
-        if name == 'publisher':
-            publishers.append(self._field_data)
-        if name == 'school':
-            schools.append(self._field_data)
-        if name in ['author', 'editor']:
-            aliases.append(self._field_data)
+        if self._is_publication and name == 'school':
+            self._pub_school_writer.writerow({'pubKey': self._key, 'schoolName': self._field_data})
+
+        elif name in pub_types:
+            self._is_publication = False
+
+        else:
+            pass
+
 
 print('{}: Start parsing'.format(datetime.datetime.now()))
 StreamHandler().parse(xml_path)
 print('{}: End parsing'.format(datetime.datetime.now()))
 
-# add generated ID and write to csv --------------------------------------------
-publishers = list(set(publishers))
-schools = list(set(schools))
-aliases = list(set(aliases))
+pub_school_df = pd.read_csv(pub_school_csv_path, sep = '|')
+# pub_school_df.shape
+# pub_school_df.head()
 
-print('Length of publishers: {}'.format(len(publishers)))
-print('Length of schools: {}'.format(len(schools)))
-print('Length of aliases: {}'.format(len(aliases)))
+school_df = pd.read_csv(school_csv_path, sep = '|')
+# school_df.shape
 
-# 2018-09-10 06:36:56.956671: Start parsing
-# 2018-09-10 06:39:35.445560: End parsing
-# Length of publishers: 1995
-# Length of schools: 1641
-# Length of aliases: 2194488
-
-
-publishers_df = pd.DataFrame(data = {'publisherId': range(1, len(publishers) + 1), 'publisherName': publishers})
-publishers_df.to_csv(publisher_csv_path, index = False, sep = '|')
-
-schools_df = pd.DataFrame(data = {'schoolId': range(1, len(schools) + 1), 'schoolName': schools})
-schools_df.to_csv(school_csv_path, index = False, sep = '|')
-
-
-alias_df = pd.DataFrame(data = {'aliasId': range(1, len(aliases) + 1), 'aliasFullName': aliases})
-alias_df.to_csv(alias_csv_path, index = False, sep = '|')
+pub_school_df = pub_school_df.merge(school_df, on = 'schoolName', how = 'left')
+# pub_school_df.shape
+# pub_school_df['schoolId'].value_counts()
+# pub_school_df.head()
+pub_school_df[school_attributes].to_csv(pub_school_csv_path, index = False, sep = '|')

@@ -99,6 +99,14 @@ Counter(editors)
 
 pub_lists = [pub['pubType'] for pub in dblp.values()]
 Counter(pub_lists)
+# Counter({'article': 1883358,
+#          'book': 15413,
+#          'incollection': 47356,
+#          'inproceedings': 2245681,
+#          'mastersthesis': 10,
+#          'phdthesis': 67442,
+#          'proceedings': 38178,
+#          'www': 2150508})
 pub_types = set(pub_lists)
 
 

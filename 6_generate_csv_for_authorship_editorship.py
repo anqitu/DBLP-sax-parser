@@ -55,16 +55,21 @@ authorship_attributes = ['pubKey', 'personId']
 editorship_attributes = ['pubKey', 'personId']
 citership_attributes = ['citingPubKey', 'citedPubKey']
 
-# tables to be created ---------------------------------------------------------
-publishers = []
-schools = []
-aliases = []
 
 class StreamHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self._charBuffer = []
         self._field_data = None
-        self._field_data = None
+        self._key = None
+        self._is_publication = False
+
+        self._pub_count = 0
+
+        self._authorship_writer = csv.DictWriter(open(authorship_csv_path, 'w'), fieldnames = ['pubKey', 'aliasFullName'], delimiter = '|')
+        self._authorship_writer.writeheader()
+
+        self._editorship_writer = csv.DictWriter(open(editorship_csv_path, 'w'), fieldnames = ['pubKey', 'aliasFullName'], delimiter = '|')
+        self._editorship_writer.writeheader()
 
     def _getCharacterData(self):
         data = ''.join(self._charBuffer).strip()
@@ -78,44 +83,78 @@ class StreamHandler(xml.sax.handler.ContentHandler):
         self._charBuffer.append(data)
 
     def startElement(self, name, attrs):
-        pass
+
+        if name in pub_types and not (name == 'www' and ('homepages' in attrs.getValue('key') or 'persons' in attrs.getValue('key'))):
+
+            self._is_publication = True
+            self._key = attrs.getValue('key')
+
+            self._pub_count += 1
+            if self._pub_count % 100000 == 0:
+                print('Current count: {}'.format(self._pub_count))
 
     def endElement(self, name):
+
         self._field_data = self._getCharacterData()
 
-        if name == 'publisher':
-            publishers.append(self._field_data)
-        if name == 'school':
-            schools.append(self._field_data)
-        if name in ['author', 'editor']:
-            aliases.append(self._field_data)
+        if self._is_publication and name == 'author':
+            self._authorship_writer.writerow({'pubKey': self._key, 'aliasFullName': self._field_data})
+
+        elif self._is_publication and name == 'editor':
+            self._editorship_writer.writerow({'pubKey': self._key, 'aliasFullName': self._field_data})
+
+        elif name in pub_types:
+            self._is_publication = False
+
+        else:
+            pass
+
 
 print('{}: Start parsing'.format(datetime.datetime.now()))
 StreamHandler().parse(xml_path)
 print('{}: End parsing'.format(datetime.datetime.now()))
 
-# add generated ID and write to csv --------------------------------------------
-publishers = list(set(publishers))
-schools = list(set(schools))
-aliases = list(set(aliases))
+authorship_df = pd.read_csv(authorship_csv_path, sep = '|')
+# authorship_df.shape
+# authorship_df.head()
+# authorship_df.isnull().sum()
+# authorship_df['pubKey'].value_counts().head(10)
+# authorship_df['aliasFullName'].value_counts().head(10)
 
-print('Length of publishers: {}'.format(len(publishers)))
-print('Length of schools: {}'.format(len(schools)))
-print('Length of aliases: {}'.format(len(aliases)))
-
-# 2018-09-10 06:36:56.956671: Start parsing
-# 2018-09-10 06:39:35.445560: End parsing
-# Length of publishers: 1995
-# Length of schools: 1641
-# Length of aliases: 2194488
-
-
-publishers_df = pd.DataFrame(data = {'publisherId': range(1, len(publishers) + 1), 'publisherName': publishers})
-publishers_df.to_csv(publisher_csv_path, index = False, sep = '|')
-
-schools_df = pd.DataFrame(data = {'schoolId': range(1, len(schools) + 1), 'schoolName': schools})
-schools_df.to_csv(school_csv_path, index = False, sep = '|')
+editorship_df = pd.read_csv(editorship_csv_path, sep = '|')
+# editorship_df.shape
+# editorship_df.head()
+# editorship_df.isnull().sum()
+# editorship_df['pubKey'].value_counts().head(10)
+# editorship_df['aliasFullName'].value_counts().head(10)
 
 
-alias_df = pd.DataFrame(data = {'aliasId': range(1, len(aliases) + 1), 'aliasFullName': aliases})
+persons_df = pd.read_csv(person_csv_path, sep = '|')
+# persons_df.head()
+
+alias_df = pd.read_csv(alias_csv_path, sep = '|')
+# alias_df.head()
+
+authorship_df = authorship_df.merge(alias_df, on = 'aliasFullName', how = 'left')
+# authorship_df.shape
+# authorship_df.head()
+# authorship_df['aliasFullName'].value_counts()
+# authorship_df['personId'].value_counts()
+authorship_df[authorship_attributes].to_csv(authorship_csv_path, index = False, sep = '|')
+
+editorship_df = editorship_df.merge(alias_df, on = 'aliasFullName', how = 'left')
+# editorship_df.shape
+# editorship_df.head()
+# editorship_df['aliasFullName'].value_counts()
+# editorship_df['personId'].value_counts()
+editorship_df[editorship_attributes].to_csv(editorship_csv_path, index = False, sep = '|')
+
+
+alias_df['aliasFirstName']= [' '.join(name.split(' ')[:-1]) if len(name.split(' ')) != 1 else name for name in alias_df['aliasFullName']]
+alias_df['aliasLastName']= [name.split(' ')[-1] if len(name.split(' ')) != 1 else '' for name in alias_df['aliasFullName']]
+alias_df = alias_df[alias_attributes]
 alias_df.to_csv(alias_csv_path, index = False, sep = '|')
+
+# alias_df.shape
+# alias_df[alias_df['aliasFullName'].duplicated()]
+# alias_df[alias_df[['aliasFirstName', 'aliasLastName']].duplicated()]

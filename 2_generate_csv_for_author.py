@@ -55,16 +55,20 @@ authorship_attributes = ['pubKey', 'personId']
 editorship_attributes = ['pubKey', 'personId']
 citership_attributes = ['citingPubKey', 'citedPubKey']
 
-# tables to be created ---------------------------------------------------------
-publishers = []
-schools = []
-aliases = []
+
+person_keys = []
+person_aliases = []
+person_primary_aliases = []
 
 class StreamHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self._charBuffer = []
         self._field_data = None
-        self._field_data = None
+
+        self._is_www_homepages = False
+        self._person_key = None
+        self._person_alias = None
+        self._pub_count = 0
 
     def _getCharacterData(self):
         data = ''.join(self._charBuffer).strip()
@@ -78,44 +82,63 @@ class StreamHandler(xml.sax.handler.ContentHandler):
         self._charBuffer.append(data)
 
     def startElement(self, name, attrs):
-        pass
+        if name == 'www' and ('homepages' in attrs.getValue('key') or 'persons' in attrs.getValue('key')):
+            self._is_www_homepages = True
+
+            self._person_key = attrs.getValue('key')
+            self._person_alias = []
+
+            self._pub_count += 1
+            if self._pub_count % 100000 == 0:
+                print('Current count: {}'.format(self._pub_count))
 
     def endElement(self, name):
+
         self._field_data = self._getCharacterData()
 
-        if name == 'publisher':
-            publishers.append(self._field_data)
-        if name == 'school':
-            schools.append(self._field_data)
-        if name in ['author', 'editor']:
-            aliases.append(self._field_data)
+        if name == 'www':
+            for person_alias in self._person_alias:
+                person_keys.append(self._person_key)
+                person_aliases.append(person_alias)
+                person_primary_aliases.append(self._person_alias[0])
+
+            self._is_www_homepages = False
+
+        elif self._is_www_homepages and name == 'author':
+            self._person_alias.append(self._field_data)
+
 
 print('{}: Start parsing'.format(datetime.datetime.now()))
 StreamHandler().parse(xml_path)
 print('{}: End parsing'.format(datetime.datetime.now()))
 
-# add generated ID and write to csv --------------------------------------------
-publishers = list(set(publishers))
-schools = list(set(schools))
-aliases = list(set(aliases))
-
-print('Length of publishers: {}'.format(len(publishers)))
-print('Length of schools: {}'.format(len(schools)))
-print('Length of aliases: {}'.format(len(aliases)))
-
-# 2018-09-10 06:36:56.956671: Start parsing
-# 2018-09-10 06:39:35.445560: End parsing
-# Length of publishers: 1995
-# Length of schools: 1641
-# Length of aliases: 2194488
+print(len(person_keys))
+print(len(person_aliases))
+print(len(person_primary_aliases))
 
 
-publishers_df = pd.DataFrame(data = {'publisherId': range(1, len(publishers) + 1), 'publisherName': publishers})
-publishers_df.to_csv(publisher_csv_path, index = False, sep = '|')
+persons_df_full = pd.DataFrame(data = {'personKey': person_keys, 'aliasFullName': person_aliases, 'person_primary_alias': person_primary_aliases}).drop_duplicates(subset = ['aliasFullName'])
+print(persons_df_full.shape)
+# persons_df_full.head()
 
-schools_df = pd.DataFrame(data = {'schoolId': range(1, len(schools) + 1), 'schoolName': schools})
-schools_df.to_csv(school_csv_path, index = False, sep = '|')
+persons_df_primary = persons_df_full[['personKey', 'person_primary_alias']].drop_duplicates()
+persons_df_primary['personId'] = range(1, persons_df_primary.shape[0] + 1)
+print(persons_df_primary.shape)
+# persons_df_primary.head()
 
+alias_df = pd.read_csv('./csv/alias.csv', sep = '|')
+persons_df = persons_df_primary.merge(alias_df[['aliasFullName', 'aliasId']], left_on = 'person_primary_alias', right_on = 'aliasFullName', how = 'left')
+persons_df = persons_df[['personId', 'personKey', 'aliasId']].rename(columns = {'aliasId': 'primaryAliasId'})
+print(persons_df.shape)
+# persons_df.head()
+persons_df.to_csv(person_csv_path, index = False, sep = '|')
 
-alias_df = pd.DataFrame(data = {'aliasId': range(1, len(aliases) + 1), 'aliasFullName': aliases})
+alias_df = alias_df.merge(persons_df_full, on = 'aliasFullName', how = 'left')
+alias_df = alias_df.merge(persons_df_primary, on = 'person_primary_alias', how = 'left')
+alias_df = alias_df[['aliasFullName', 'aliasId', 'personId']]
+print(alias_df.shape)
+# alias_df.head()
+# alias_df.isnull().sum()
 alias_df.to_csv(alias_csv_path, index = False, sep = '|')
+
+# @NOTE Though we only loop through authors, all alises has got their personId. This means all editors has been authors for some publications. In this case, there is no need to parse the xml for editors.
