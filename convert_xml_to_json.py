@@ -10,12 +10,11 @@ import json
 xml_path = './data/dblp.xml'
 # xml_path = './data/dblp_sample.xml'
 json_path = './data/dblp.json'
-json_sample_path = './data/dblp_sample.json'
 
 pub_types = ['article', 'inproceedings', 'proceedings', 'book', 'incollection', \
             'phdthesis', 'mastersthesis', 'www']
-all_fields = ['title',  'author',  'year',  'month',  'journal',  'crossref']
-all_attributes = ['key']
+all_fields = ['title',  'author',  'year',  'month',  'crossref']
+all_attributes = ['key', 'mdate']
 
 dblp = {}
 
@@ -23,7 +22,7 @@ class StreamHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self._charBuffer = []
         self._pub_elements = {}
-        self._pubID = 0
+        self.data = None
 
 
     def _getCharacterData(self):
@@ -43,40 +42,32 @@ class StreamHandler(xml.sax.handler.ContentHandler):
     def startElement(self, name, attrs):
 
         if name in pub_types:
-            self._pubID += 1
-
-            if self._pubID % 100000 == 0:
-                print(elf._pubID)
 
             self._pub_elements = {'pubType': name}
-
-            for attribute in all_attributes:
-                if attribute in attrs.getNames():
-                    self._pub_elements[attribute] = attrs.getValue(attribute)
+            self._pub_elements['key'] = attrs.getValue('key')
+            # self._pub_elements['mdate'] = attrs.getValue('mdate')
 
     def endElement(self, name):
 
-        if name in all_fields:
+        self.data = self._getCharacterData()
+
+        if name in ['year', 'month', 'booktitle', 'crossref']:
             if name not in self._pub_elements:
-                self._pub_elements[name] = [self._getCharacterData()]
+                self._pub_elements[name] = self.data
+
+        if name in ['cite', 'editor', 'author']:
+            if name not in self._pub_elements:
+                self._pub_elements[name] = [self.data]
             else:
-                self._pub_elements[name].append(self._getCharacterData())
+                self._pub_elements[name].append(self.data)
 
         if name in pub_types:
-            dblp[self._pubID] = self._pub_elements
+            dblp[self._pub_elements['key']] = self._pub_elements
 
 
 print('{}: Start parsing'.format(datetime.datetime.now()))
 StreamHandler().parse(xml_path)
 print('{}: End parsing'.format(datetime.datetime.now()))
 
-
 with open(json_path, 'w') as outfile:
-    json.dump(dblp, outfile)
-
-
-pubId_sample = range(1, 100001)
-dblp_sample = {pubID: dblp[pubID] for pubID in pubId_sample}
-dblp_sample[1]
-with open(json_sample_path, 'w') as outfile:
     json.dump(dblp, outfile)

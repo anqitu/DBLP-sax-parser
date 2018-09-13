@@ -14,20 +14,31 @@ DROP TABLE IF EXISTS ALIAS;
 DROP TABLE IF EXISTS PUBLISHER;
 USE dblpDB;
 
-/* Persons */
+/* Publishers */
 CREATE TABLE PUBLISHER(
 publisherId				INT     			AUTO_INCREMENT,
 publisherName			VARCHAR(250)	    NOT NULL,
 
 PRIMARY KEY (publisherId));
 
+/* Schools */
+CREATE TABLE SCHOOL(
+schoolId				INT     			AUTO_INCREMENT,
+schoolName			    VARCHAR(250)	    NOT NULL,
+
+PRIMARY KEY (schoolId));
+
+
+/* Persons */
 CREATE TABLE ALIAS(
 aliasId					INT     			AUTO_INCREMENT,
 aliasFirstName			VARCHAR(100)	    NOT NULL,
-aliasLastName			VARCHAR(100)	    NOT NULL,
+aliasLastName			VARCHAR(100),
+personId				INT     			NOT NULL,
 
 PRIMARY KEY (aliasId));
 
+<<<<<<< HEAD
 CREATE TABLE PERSON(
 personId				INT     			AUTO_INCREMENT,
 personKey				VARCHAR(150)		,
@@ -36,13 +47,17 @@ primaryAliasId			INT	    			,
 CONSTRAINT UNIQUE (personKey),
 PRIMARY KEY (personId),
 FOREIGN KEY (primaryAliasId) REFERENCES ALIAS(aliasId));
+=======
+-- FOREIGN KEY (personId) REFERENCES PERSON(personId)) @TODO
+>>>>>>> develop
 
 /* Publications */
 CREATE TABLE PUBLICATION(
 pubKey				VARCHAR(150)     		,
 pubTitle			VARCHAR(1000)	    	NOT NULL,
 pubYear				SMALLINT    			,
-pubMonth	    	TINYINT					,
+pubMonth	    	VARCHAR(50)					,
+pubMdate	    	TINYINT					,
 pubType            	VARCHAR(50)				,
 pubCrossRef			VARCHAR(150)			,
 publisherId			INT						,

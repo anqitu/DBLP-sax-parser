@@ -1,0 +1,68 @@
+alias.csv
+Shape: (2194488, 3)
+Columns: ['aliasFullName', 'aliasId', 'personId']
+--------------------------------------------------
+www.csv
+Shape: (15, 2)
+Columns: ['pubKey', 'wwwBooktitle']
+--------------------------------------------------
+editorship.csv
+Shape: (92531, 2)
+Columns: ['pubKey', 'personId']
+--------------------------------------------------
+inproceedings.csv
+Shape: (2245681, 5)
+Columns: ['pubKey', 'inproBooktitle', 'inproNumber', 'inproPages', 'inproCrossref']
+--------------------------------------------------
+article.csv
+Shape: (1883358, 7)
+Columns: ['pubKey', 'articleJournal', 'articleBooktitle', 'articleNumber', 'articlePages', 'articleVolume', 'articleCrossref']
+--------------------------------------------------
+publisher.csv
+Shape: (1995, 2)
+Columns: ['publisherId', 'publisherName']
+--------------------------------------------------
+proceedings.csv
+Shape: (38178, 9)
+Columns: ['pubKey', 'proceedAddress', 'proceedJournal', 'proceedBooktitle', 'proceedNumber', 'proceedPages', 'proceedSeries', 'proceedVolume', 'proceedType']
+--------------------------------------------------
+authorship.csv
+Shape: (12483168, 2)
+Columns: ['pubKey', 'personId']
+--------------------------------------------------
+incollection.csv
+Shape: (47356, 6)
+Columns: ['pubKey', 'incolChapter', 'incolBooktitle', 'incolNumber', 'incolPages', 'incolCrossref']
+--------------------------------------------------
+thesis.csv
+Shape: (67452, 5)
+Columns: ['pubKey', 'thesisNumber', 'thesisPages', 'thesisSeries', 'thesisVolume']
+--------------------------------------------------
+pub_school.csv
+Shape: (69742, 2)
+Columns: ['schoolId', 'schoolName']
+--------------------------------------------------
+publication.csv
+Shape: (4297453, 6)
+Columns: ['pubKey', 'pubTitle', 'pubYear', 'pubMdate', 'pubType', 'publisherId']
+--------------------------------------------------
+person.csv
+Shape: (2150171, 3)
+Columns: ['personId', 'personKey', 'primaryAliasId']
+--------------------------------------------------
+citership.csv
+Shape: (172584, 2)
+Columns: ['citingPubKey', 'citedPubKey']
+--------------------------------------------------
+book.csv
+Shape: (15413, 5)
+Columns: ['pubKey', 'bookBooktitle', 'bookPages', 'bookSeries', 'bookVolume']
+--------------------------------------------------
+month.csv
+Shape: (49188, 2)
+Columns: ['pubKey', 'month']
+--------------------------------------------------
+school.csv
+Shape: (1641, 2)
+Columns: ['schoolId', 'schoolName']
+--------------------------------------------------
