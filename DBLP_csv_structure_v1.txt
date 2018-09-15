@@ -58,9 +58,9 @@ book.csv
 Shape: (15413, 5)
 Columns: ['pubKey', 'bookBooktitle', 'bookPages', 'bookSeries', 'bookVolume']
 --------------------------------------------------
-month.csv
+pubmonth.csv
 Shape: (49188, 2)
-Columns: ['pubKey', 'month']
+Columns: ['pubKey', 'pubMonth']
 --------------------------------------------------
 school.csv
 Shape: (1641, 2)

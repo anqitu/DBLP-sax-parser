@@ -22,4 +22,5 @@ for file_path in file_paths:
     df = pd.read_csv(file_path, sep = '|')
     print('Shape: {}'.format(df.shape))
     print('Columns: {}'.format(list(df.columns)))
+    print(df.isnull().sum())
     print('-' * 50)

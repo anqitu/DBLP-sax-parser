@@ -1,4 +1,6 @@
 /* INIT */
+/* DROP DATABASE dblpDB */
+
 CREATE DATABASE IF NOT EXISTS dblpDB;
 
 use dblpDB;
@@ -39,22 +41,22 @@ schoolName			    VARCHAR(300)	    NOT NULL,
 
 PRIMARY KEY (schoolId));
 
+CREATE TABLE PERSON(
+personKey				VARCHAR(200)		,
+personFirstName			VARCHAR(100)	    NOT NULL,
+personLastName			VARCHAR(100)		,
+
+PRIMARY KEY (personKey));
+
 CREATE TABLE ALIAS(
 aliasId					INT     			AUTO_INCREMENT,
 aliasFirstName			VARCHAR(100)	    NOT NULL,
 aliasLastName			VARCHAR(100)		,
-personId				INT     			NOT NULL,
+personKey				VARCHAR(200)     	NOT NULL,
 
-PRIMARY KEY (aliasId));
+PRIMARY KEY (aliasId),
+FOREIGN KEY (personKey) REFERENCES PERSON(personKey));
 
-CREATE TABLE PERSON(
-personId				INT     			AUTO_INCREMENT,
-personKey				VARCHAR(200)		,
-primaryAliasId			INT	    			NOT NULL,
-
-CONSTRAINT UNIQUE (personKey),
-PRIMARY KEY (personId),
-FOREIGN KEY (primaryAliasId) REFERENCES ALIAS(aliasId));
 
 /* ========================================================================= */
 /* Publications                                                              */
@@ -90,7 +92,8 @@ articleCrossRef		VARCHAR(200)	    	,
 
 
 PRIMARY KEY (pubKey),
-FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey));
+FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey),
+FOREIGN KEY (articleCrossRef) REFERENCES PUBLICATION(pubKey));
 
 CREATE TABLE PROCEEDING(
 pubKey				VARCHAR(200)     		,
@@ -114,7 +117,8 @@ inproPages			VARCHAR(100)	    	,
 inproCrossRef		VARCHAR(200)	    	,
 
 PRIMARY KEY (pubKey),
-FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey));
+FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey),
+FOREIGN KEY (inproCrossRef) REFERENCES PUBLICATION(pubKey));
 
 CREATE TABLE BOOK(
 pubKey				VARCHAR(150)			,
@@ -135,7 +139,8 @@ incolPages			VARCHAR(100)	    	,
 incolCrossRef		VARCHAR(200)	    	,
 
 PRIMARY KEY (pubKey),
-FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey));
+FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey),
+FOREIGN KEY (incolCrossRef) REFERENCES PUBLICATION(pubKey));
 
 CREATE TABLE THESIS(
 pubKey				VARCHAR(150)			,
@@ -161,19 +166,19 @@ FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey));
 
 CREATE TABLE AUTHORSHIP(
 pubKey				VARCHAR(200)     		,
-personId			INT	 					,
+personKey			VARCHAR(200)	 		,
 
-PRIMARY KEY (pubKey,personId),
+PRIMARY KEY (pubKey,personKey),
 FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey),
-FOREIGN KEY (personId) REFERENCES PERSON(personId));
+FOREIGN KEY (personKey) REFERENCES PERSON(personKey));
 
 CREATE TABLE EDITORSHIP(
 pubKey				VARCHAR(200)     		,
-personId			INT	 					,
+personKey			VARCHAR(200)	 		,
 
-PRIMARY KEY (pubKey,personId),
+PRIMARY KEY (pubKey,personKey),
 FOREIGN KEY (pubKey) REFERENCES PUBLICATION(pubKey),
-FOREIGN KEY (personId) REFERENCES PERSON(personId));
+FOREIGN KEY (personKey) REFERENCES PERSON(personKey));
 
 CREATE TABLE CITERSHIP(
 citingPubKey		VARCHAR(200)     		,
@@ -185,7 +190,7 @@ FOREIGN KEY (citedPubKey) REFERENCES PUBLICATION(pubKey));
 
 CREATE TABLE PUB_SCHOOL(
 schoolId			INT     				,
-pubKey				VARCHAR(200)	 		,	
+pubKey				VARCHAR(200)	 		,
 
 PRIMARY KEY (schoolId,pubKey),
 FOREIGN KEY (schoolId) REFERENCES SCHOOL(schoolId),

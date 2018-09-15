@@ -1,0 +1,140 @@
+alias.csv
+Shape: (44313, 2)
+Columns: ['personFullName', 'personKey']
+personFullName    0
+personKey         0
+dtype: int64
+--------------------------------------------------
+www.csv
+Shape: (15, 2)
+Columns: ['pubKey', 'wwwBooktitle']
+pubKey           0
+wwwBooktitle    14
+dtype: int64
+--------------------------------------------------
+editorship.csv
+Shape: (92531, 2)
+Columns: ['pubKey', 'personFullName']
+pubKey            0
+personFullName    0
+dtype: int64
+--------------------------------------------------
+inproceedings.csv
+Shape: (2245681, 5)
+Columns: ['pubKey', 'inproBooktitle', 'inproNumber', 'inproPages', 'inproCrossref']
+pubKey                  0
+inproBooktitle          0
+inproNumber       2245302
+inproPages         120715
+inproCrossref       16387
+dtype: int64
+--------------------------------------------------
+article.csv
+Shape: (1883358, 7)
+Columns: ['pubKey', 'articleJournal', 'articleBooktitle', 'articleNumber', 'articlePages', 'articleVolume', 'articleCrossref']
+pubKey                    0
+articleJournal          227
+articleBooktitle    1883135
+articleNumber        401586
+articlePages         238632
+articleVolume           709
+articleCrossref     1881412
+dtype: int64
+--------------------------------------------------
+proceedings.csv
+Shape: (38178, 9)
+Columns: ['pubKey', 'proceedAddress', 'proceedJournal', 'proceedBooktitle', 'proceedNumber', 'proceedPages', 'proceedSeries', 'proceedVolume', 'proceedType']
+pubKey                  0
+proceedAddress      38175
+proceedJournal      38174
+proceedBooktitle      483
+proceedNumber       38149
+proceedPages        38170
+proceedSeries       20679
+proceedVolume       21008
+proceedType             0
+dtype: int64
+--------------------------------------------------
+authorship.csv
+Shape: (12483168, 2)
+Columns: ['pubKey', 'personFullName']
+pubKey            0
+personFullName    0
+dtype: int64
+--------------------------------------------------
+pubmonth.csv
+Shape: (49186, 2)
+Columns: ['pubKey', 'pubMonth']
+pubKey      0
+pubMonth    0
+dtype: int64
+--------------------------------------------------
+incollection.csv
+Shape: (47356, 6)
+Columns: ['pubKey', 'incolChapter', 'incolBooktitle', 'incolNumber', 'incolPages', 'incolCrossref']
+pubKey                0
+incolChapter      47354
+incolBooktitle        0
+incolNumber       47316
+incolPages         3732
+incolCrossref      3784
+dtype: int64
+--------------------------------------------------
+thesis.csv
+Shape: (67452, 5)
+Columns: ['pubKey', 'thesisNumber', 'thesisPages', 'thesisSeries', 'thesisVolume']
+pubKey              0
+thesisNumber    67449
+thesisPages     48863
+thesisSeries    67401
+thesisVolume    67404
+dtype: int64
+--------------------------------------------------
+pub_school.csv
+Shape: (69742, 2)
+Columns: ['schoolName', 'pubKey']
+schoolName    0
+pubKey        0
+dtype: int64
+--------------------------------------------------
+publication.csv
+Shape: (4297453, 6)
+Columns: ['pubKey', 'pubTitle', 'pubYear', 'pubMdate', 'pubType', 'publisherName']
+pubKey                 0
+pubTitle              29
+pubYear                3
+pubMdate               0
+pubType                0
+publisherName    4239120
+dtype: int64
+--------------------------------------------------
+person.csv
+Shape: (2150147, 2)
+Columns: ['personKey', 'personFullName']
+personKey         0
+personFullName    0
+dtype: int64
+--------------------------------------------------
+citership.csv
+Shape: (172584, 2)
+Columns: ['citingPubKey', 'citedPubKey']
+citingPubKey    0
+citedPubKey     1
+dtype: int64
+--------------------------------------------------
+book.csv
+Shape: (15413, 5)
+Columns: ['pubKey', 'bookBooktitle', 'bookPages', 'bookSeries', 'bookVolume']
+pubKey               0
+bookBooktitle    14059
+bookPages         4258
+bookSeries        8907
+bookVolume       12519
+dtype: int64
+--------------------------------------------------
+/usr/local/lib/python3.6/site-packages/IPython/core/interactiveshell.py:2698: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  interactivity=interactivity, compiler=compiler, result=result)
+/usr/local/lib/python3.6/site-packages/IPython/core/interactiveshell.py:2698: DtypeWarning: Columns (2,5,6) have mixed types. Specify dtype option on import or set low_memory=False.
+  interactivity=interactivity, compiler=compiler, result=result)
+/usr/local/lib/python3.6/site-packages/IPython/core/interactiveshell.py:2698: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  interactivity=interactivity, compiler=compiler, result=result)
