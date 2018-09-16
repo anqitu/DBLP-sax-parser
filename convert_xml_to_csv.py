@@ -13,9 +13,9 @@ xml_path = './data/dblp.xml'
 pub_csv_path = './csv/publication.csv'
 pub_subclass_csv_path = {
                         'article': './csv/article.csv',
-                        'inproceedings': './csv/inproceedings.csv',
+                        'inproceedings': './csv/inproceeding.csv',
                         'incollection': './csv/incollection.csv',
-                        'proceedings': './csv/proceedings.csv',
+                        'proceedings': './csv/proceeding.csv',
                         'book': './csv/book.csv',
                         'thesis': './csv/thesis.csv',
                         'www': './csv/www.csv',
@@ -71,7 +71,10 @@ class StreamHandler(xml.sax.handler.ContentHandler):
 
         self._key = None
         self._months = None
-        self._is_proceedings = False
+        self._pub_cites = None
+        self._pub_authors = None
+        self._pub_editors = None
+        self._pub_schools = None
 
         self._person_writer = csv.DictWriter(open(person_csv_path, 'w'), fieldnames = person_attributes, delimiter = '|')
         self._person_writer.writeheader()
@@ -143,23 +146,27 @@ class StreamHandler(xml.sax.handler.ContentHandler):
                 self._key = attrs.getValue('key')
                 mdate = attrs.getValue('mdate')
 
-                self._pub_fields = {attribute: None for attribute in pub_attributes.keys()}
+                self._pub_fields = {attribute: '\\N' for attribute in pub_attributes.keys()}
                 self._pub_fields['key'] = self._key
                 self._pub_fields['mdate'] = mdate
                 self._pub_fields['type'] = name
 
-                self._pub_subclass_fields = {attribute: None for attribute in pub_subclass_attributes_map[self._current_pub_type].keys()}
+                self._pub_subclass_fields = {attribute: '\\N' for attribute in pub_subclass_attributes_map[self._current_pub_type].keys()}
                 self._pub_subclass_fields['key'] = self._key
 
                 if self._current_pub_type == 'proceedings':
                     self._pub_subclass_fields['type'] = self._key.split('/')[0]
 
                 self._months = []
+                self._pub_cites = []
+                self._pub_authors = []
+                self._pub_editors = []
+                self._pub_schools = []
 
 
 
     def endElement(self, name):
-        self._field_data = self._getCharacterData()
+        self._field_data = self._getCharacterData().replace('|', '-').replace('"', '')
 
         if self._is_www_homepages:
             if name == 'author':
@@ -174,7 +181,7 @@ class StreamHandler(xml.sax.handler.ContentHandler):
         elif self._is_publication:
 
             if name == 'cite':
-                self._citership_writer.writerow({'citingPubKey': self._key, 'citedPubKey': self._field_data})
+                self._pub_cites.append(self._field_data)
 
             elif name == 'title':
                 self._pub_fields[name] = self._field_data
@@ -187,7 +194,7 @@ class StreamHandler(xml.sax.handler.ContentHandler):
             elif name == 'year':
                 self._pub_fields[name] = self._field_data
 
-            elif name == 'publisher' and self._pub_fields['publisher'] == None:
+            elif name == 'publisher' and self._pub_fields['publisher'] == '\\N':
                 self._pub_fields['publisher'] = self._field_data
 
             elif name == 'month':
@@ -196,26 +203,26 @@ class StreamHandler(xml.sax.handler.ContentHandler):
                     self._months.append(month)
 
             elif name == 'school':
-                self._pub_school_writer.writerow({'pubKey': self._key, 'schoolName': self._field_data})
+                self._pub_schools.append(self._field_data)
 
             elif name == 'author':
-                self._authorship_writer.writerow({'pubKey': self._key, 'personFullName': self._field_data})
+                self._pub_authors.append(self._field_data)
 
             elif name == 'editor':
-                self._editorship_writer.writerow({'pubKey': self._key, 'personFullName': self._field_data})
+                self._pub_editors.append(self._field_data)
 
             elif name in pub_subclass_attributes_map[self._current_pub_type].keys():
 
                 # combine several pages into one string seperate by ','
                 if name == 'pages':
-                    if self._pub_subclass_fields['pages'] != None:
+                    if self._pub_subclass_fields['pages'] != '\\N':
                         self._pub_subclass_fields['pages'] = self._pub_subclass_fields['pages'] + ', ' + self._field_data
                     else:
                         self._pub_subclass_fields['pages'] = self._field_data
 
                 # Only keep those longer version for publications with more than 1 series or colume
                 elif name in ['series', 'volume']:
-                    if self._pub_subclass_fields[name] != None:
+                    if self._pub_subclass_fields[name] != '\\N':
                         self._pub_subclass_fields[name] = self._pub_subclass_fields[name] if len(self._pub_subclass_fields[name]) > len(self._field_data) else self._field_data
                     else:
                         self._pub_subclass_fields[name] = self._field_data
@@ -233,6 +240,18 @@ class StreamHandler(xml.sax.handler.ContentHandler):
 
                 for month in self._months:
                     self._month_writer.writerow({'pubKey': self._key, 'pubMonth': month})
+
+                for cited_pub in set(self._pub_cites):
+                    self._citership_writer.writerow({'citingPubKey': self._key, 'citedPubKey': cited_pub})
+
+                for author in set(self._pub_authors):
+                    self._authorship_writer.writerow({'pubKey': self._key, 'personFullName': author})
+
+                for editor in set(self._pub_editors):
+                    self._editorship_writer.writerow({'pubKey': self._key, 'personFullName': editor})
+
+                for school in set(self._pub_schools):
+                    self._pub_school_writer.writerow({'pubKey': self._key, 'schoolName': school})
 
                 self._is_publication = False
 
