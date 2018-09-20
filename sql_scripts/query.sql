@@ -153,9 +153,8 @@ AND PUBLICATION.pubYear > YEAR(CURRENT_TIMESTAMP) - 5
 GROUP BY AUTHORSHIP.personKey
 ORDER BY Count(AUTHORSHIP.personKey) DESC LIMIT 10;
 
-
 -- Question 8
-SELECT conference, MAX(pubCount) AS pubCount FROM (
+SELECT conference, pubTitle, pubCount FROM (
 	SELECT PROCEEDING.pubKey, COUNT(*) AS pubCount, SUBSTRING_INDEX(SUBSTRING_INDEX(PROCEEDING.pubKey, 'conf/', -1), '/', 1) AS conference
 	FROM PROCEEDING, INPROCEEDING, PUBMONTH
 	WHERE PROCEEDING.pubKey = INPROCEEDING.inproCrossRef
@@ -164,10 +163,20 @@ SELECT conference, MAX(pubCount) AS pubCount FROM (
 	AND proceedType = "conf"
 	GROUP BY PROCEEDING.pubKey
 ) AS CONFERENCES
-WHERE pubCount > 100
-GROUP BY conference;
+LEFT JOIN
+PUBLICATION
+USING (pubKey)
+WHERE pubCount > 100;
 
 -- Question 9
-
-SELECT * FROM PUBLICATION
-WHERE pubYear = 1936;
+SELECT CONCAT(PERSON.personFirstName, " ", PERSON.personLastName) AS pubAuthor, yearCount FROM
+(SELECT personKey, COUNT(*) AS yearCount FROM
+(SELECT DISTINCT personKey, pubYear FROM PUBLICATION
+LEFT JOIN AUTHORSHIP USING (pubKey)
+LEFT JOIN PERSON USING (personKey)
+WHERE personLastName LIKE 'H%'
+AND pubYear > 1988) AS p
+GROUP BY personKey
+HAVING yearCount = 30) AS i,
+PERSON
+WHERE PERSON.personKey = i.personKey;
