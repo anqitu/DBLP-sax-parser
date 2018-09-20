@@ -77,7 +77,7 @@ publication_df_keep = publication_df_keep.merge(pubKey_keep)
 publication_df_keep.to_csv(pub_csv_path.replace('/csv/', '/csv_half/'), index = False, sep = '|', line_terminator='\r\n')
 
 citership_df = pd.read_csv(citership_csv_path, sep = '|')
-citership_df_keep = citership_df_keep[citership_df_keep['citingPubKey'].isin(publication_df_keep['pubKey'])]
+citership_df_keep = citership_df[citership_df['citingPubKey'].isin(publication_df_keep['pubKey'])]
 citership_df_keep = citership_df_keep[citership_df_keep['citedPubKey'].isin(publication_df_keep['pubKey'])]
 citership_df_keep.shape
 citership_df_keep.to_csv(citership_csv_path.replace('/csv/', '/csv_half/'), index = False, sep = '|', line_terminator='\r\n')

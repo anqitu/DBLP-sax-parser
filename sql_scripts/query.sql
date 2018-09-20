@@ -1,4 +1,3 @@
--- run these two lines first if with dblpDB_v1.sql
 SET SESSION query_cache_type=0;
 
 -- Question 1
@@ -60,7 +59,7 @@ SELECT * FROM (
 WHERE conference = "icc";
 
 -- Question 3 c
--- Z(conference) = "sigmod", Y(year) = 2015
+-- Z(conference) = "sigmod", Y(year) = 2014
 SELECT
 AUTHORSHIP.personKey,
 CONCAT(personFirstName, " ", PERSON.personLastName) as personName,
@@ -70,7 +69,7 @@ WHERE INPROCEEDING.pubKey = PUBLICATION.pubKey
 AND INPROCEEDING.pubKey = AUTHORSHIP.pubKey
 AND PROCEEDING.pubKey = INPROCEEDING.inproCrossRef
 AND PERSON.personKey = AUTHORSHIP.personKey
-AND PUBLICATION.pubYear = 2015
+AND PUBLICATION.pubYear = 2014
 AND SUBSTRING_INDEX(SUBSTRING_INDEX(PROCEEDING.pubKey, 'conf/', -1), '/', 1) = 'sigmod'
 GROUP BY personKey
 HAVING COUNT(*) >= 2;
@@ -110,7 +109,7 @@ FROM PERSON,
 	GROUP BY AUTHORSHIP.personKey
 ) AS PVLDB LEFT JOIN
 (
-	SELECT AUTHORSHIP.personKey AS personKey FROM PUBLICATION, AUTHORSHIP
+	SELECT COUNT(*) AS count, AUTHORSHIP.personKey AS personKey FROM PUBLICATION, AUTHORSHIP
 	WHERE PUBLICATION.pubKey = AUTHORSHIP.pubKey
 	AND PUBLICATION.pubKey LIKE "%kdd%"
 	GROUP BY AUTHORSHIP.personKey
