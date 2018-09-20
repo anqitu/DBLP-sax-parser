@@ -155,3 +155,31 @@ AND PUBLICATION.pubTitle COLLATE UTF8_GENERAL_CI REGEXP '[[:<:]]data[[:>:]]'
 AND PUBLICATION.pubYear > YEAR(CURRENT_TIMESTAMP) - 5
 GROUP BY AUTHORSHIP.personKey
 ORDER BY Count(AUTHORSHIP.personKey) DESC LIMIT 10;
+
+-- Question 8
+SELECT conference, pubTitle, pubCount FROM (
+	SELECT PROCEEDING.pubKey, COUNT(*) AS pubCount, SUBSTRING_INDEX(SUBSTRING_INDEX(PROCEEDING.pubKey, 'conf/', -1), '/', 1) AS conference
+	FROM PROCEEDING, INPROCEEDING, PUBMONTH
+	WHERE PROCEEDING.pubKey = INPROCEEDING.inproCrossRef
+	AND PUBMONTH.pubMonth = "June"
+	AND PUBMONTH.pubKey = PROCEEDING.pubKey
+	AND proceedType = "conf"
+	GROUP BY PROCEEDING.pubKey
+) AS CONFERENCES
+LEFT JOIN
+PUBLICATION
+USING (pubKey)
+WHERE pubCount > 100;
+
+-- Question 9
+SELECT CONCAT(PERSON.personFirstName, " ", PERSON.personLastName) AS pubAuthor, yearCount FROM
+(SELECT personKey, COUNT(*) AS yearCount FROM
+(SELECT DISTINCT personKey, pubYear FROM PUBLICATION
+LEFT JOIN AUTHORSHIP USING (pubKey)
+LEFT JOIN PERSON USING (personKey)
+WHERE personLastName LIKE 'H%'
+AND pubYear > 1988) AS p
+GROUP BY personKey
+HAVING yearCount = 30) AS i,
+PERSON
+WHERE PERSON.personKey = i.personKey;
