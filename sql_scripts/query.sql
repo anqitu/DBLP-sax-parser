@@ -1,7 +1,5 @@
 -- run these two lines first if with dblpDB_v1.sql
-UPDATE PERSON SET personFirstName = SUBSTRING_INDEX(personFirstName, ' ', 1);
-UPDATE ALIAS SET aliasFirstName = SUBSTRING_INDEX(aliasFirstName, ' ', 1);
-
+SET SESSION query_cache_type=0;
 
 -- Question 1
 SELECT pubType, COUNT(*) FROM PUBLICATION
@@ -21,20 +19,19 @@ SELECT conference, MAX(pubCount) AS pubCount FROM (
 WHERE pubCount > 200
 GROUP BY conference;
 
--- SELECT p.conference, MAX(i.inproCount) FROM
--- (SELECT PUBMONTH.pubmonth, PUBMONTH.pubKey FROM PUBMONTH
--- WHERE PUBMONTH.pubMonth = "July") AS m
--- LEFT JOIN
--- (SELECT PROCEEDING.proceedType, PROCEEDING.pubKey, SUBSTRING_INDEX(SUBSTRING_INDEX(PROCEEDING.pubKey, 'conf/', -1), '/', 1) AS conference FROM PROCEEDING
--- WHERE PROCEEDING.proceedType = 'conf') AS p
--- USING(pubKey)
--- LEFT JOIN
--- (SELECT INPROCEEDING.inproCrossref as proceedKey, COUNT(INPROCEEDING.pubKey) as inproCount FROM INPROCEEDING
--- WHERE INPROCEEDING.inproCrossref IS NOT NULL
--- GROUP BY proceedKey) AS i
--- ON i.proceedKey = p.pubKey
--- WHERE inproCount > 200
--- GROUP BY p.conference;
+SELECT p.conference, MAX(i.inproCount) FROM
+(SELECT PUBMONTH.pubmonth, PUBMONTH.pubKey FROM PUBMONTH
+WHERE PUBMONTH.pubMonth = "July") AS m
+LEFT JOIN
+(SELECT PROCEEDING.proceedType, PROCEEDING.pubKey, SUBSTRING_INDEX(SUBSTRING_INDEX(PROCEEDING.pubKey, 'conf/', -1), '/', 1) AS conference FROM PROCEEDING
+WHERE PROCEEDING.proceedType = 'conf') AS p
+USING(pubKey)
+LEFT JOIN
+(SELECT INPROCEEDING.inproCrossref as proceedKey, COUNT(INPROCEEDING.pubKey) as inproCount FROM INPROCEEDING
+GROUP BY proceedKey) AS i
+ON i.proceedKey = p.pubKey
+WHERE inproCount > 200
+GROUP BY p.conference;
 
 
 -- Question 3 a
@@ -155,3 +152,22 @@ AND PUBLICATION.pubTitle COLLATE UTF8_GENERAL_CI REGEXP '[[:<:]]data[[:>:]]'
 AND PUBLICATION.pubYear > YEAR(CURRENT_TIMESTAMP) - 5
 GROUP BY AUTHORSHIP.personKey
 ORDER BY Count(AUTHORSHIP.personKey) DESC LIMIT 10;
+
+
+-- Question 8
+SELECT conference, MAX(pubCount) AS pubCount FROM (
+	SELECT PROCEEDING.pubKey, COUNT(*) AS pubCount, SUBSTRING_INDEX(SUBSTRING_INDEX(PROCEEDING.pubKey, 'conf/', -1), '/', 1) AS conference
+	FROM PROCEEDING, INPROCEEDING, PUBMONTH
+	WHERE PROCEEDING.pubKey = INPROCEEDING.inproCrossRef
+	AND PUBMONTH.pubMonth = "June"
+	AND PUBMONTH.pubKey = PROCEEDING.pubKey
+	AND proceedType = "conf"
+	GROUP BY PROCEEDING.pubKey
+) AS CONFERENCES
+WHERE pubCount > 100
+GROUP BY conference;
+
+-- Question 9
+
+SELECT * FROM PUBLICATION
+WHERE pubYear = 1936;
