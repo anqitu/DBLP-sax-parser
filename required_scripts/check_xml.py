@@ -6,9 +6,7 @@ import csv
 import pandas as pd
 
 # Configure paths
-xml_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.xml'
-# xml_path = '/Users/anqitu/Workspaces/NTU/CZ4031-Project1-Querying-Databases-Efficiently/data/dblp.000.xml'
-
+xml_path = './data/dblp.xml'
 
 pub_types = ['article', 'inproceedings', 'proceedings', 'book', 'incollection', \
             'phdthesis', 'mastersthesis', 'www']

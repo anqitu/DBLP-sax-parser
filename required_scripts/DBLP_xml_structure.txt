@@ -47,35 +47,6 @@ url              0 or 1     0 or many  1 and only 1     0 or many           NaN 
 volume           0 or 1        0 or 1           NaN           NaN           NaN        0 or 1     0 or many        NaN
 year             0 or 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1     0 or 1
 
--------------------------------------------------
-Kept attributes and TODO Summary
-Fields:
-                article          book  incollection inproceedings mastersthesis     phdthesis   proceedings           www
-
-title      1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1        0 or 1
-year             0 or 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1        0 or 1
-key        1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1
-mdate      1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1  1 and only 1
-
-address             NaN           NaN           NaN           NaN           NaN           NaN        0 or 1        NaN
-chapter             NaN           NaN        0 or 1           NaN           NaN           NaN           NaN        NaN
-journal          0 or 1           NaN           NaN           NaN           NaN           NaN        0 or 1        NaN
-month            0 or 1        0 or 1           NaN        0 or 1           NaN        0 or 1             1        NaN  @NOTE one to many, Extract the month for proceedings
-booktitle        0 or 1        0 or 1  1 and only 1  1 and only 1           NaN           NaN        0 or 1     0 or 1
-crossref         0 or 1           NaN        0 or 1        0 or 1           NaN           NaN           NaN        NaN  @NOTE Ignore crossref for www and proceedings
-number           0 or 1           NaN        0 or 1        0 or 1           NaN        0 or 1        0 or 1        NaN
-publisher        0 or 1        0 or 1        0 or 1           NaN           NaN        0 or 1        0 or 1        NaN  @NOTE take the first publisher if got more than 1
-pages            0 or 1        0 or 1        0 or 1        0 or 1           NaN        0 or 1        0 or 1        NaN  @NOTE link pages of those with more than 1 page with comma
-series              NaN        0 or 1           NaN           NaN           NaN        0 or 1        0 or 1        NaN  @NOTE only take the longest one for those with more than 1
-volume           0 or 1        0 or 1           NaN           NaN           NaN        0 or 1        0 or 1        NaN  @NOTE only take the longest one for those with more than 1
-
-
-school              NaN     0 or many           NaN           NaN  1 and only 1     0 or many           NaN        NaN  @NOTE many to many
-cite          0 or many     0 or many     0 or many     0 or many           NaN           NaN     0 or many  0 or many  @NOTE many to many
-editor        0 or many     0 or many           NaN     0 or many           NaN           NaN     0 or many  0 or many  @NOTE many to many
-author        0 or many     0 or many     0 or many     0 or many  1 and only 1     0 or many        0 or 1     0 or many  @NOTE Extract the first and last name
-
-
 ==================================================
 3. Maximum length for each string element
         Field  Max String Length
