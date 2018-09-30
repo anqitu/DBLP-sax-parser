@@ -1,0 +1,14 @@
+
+data/
+
+csv/
+
+db_csv/
+
+dblpDB/
+
+csv_quarter/
+
+csv_half/
+
+*.zip
