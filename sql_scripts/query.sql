@@ -18,21 +18,6 @@ SELECT conference, MAX(pubCount) AS pubCount FROM (
 WHERE pubCount > 200
 GROUP BY conference;
 
-SELECT p.conference, MAX(i.inproCount) FROM
-(SELECT PUBMONTH.pubmonth, PUBMONTH.pubKey FROM PUBMONTH
-WHERE PUBMONTH.pubMonth = "July") AS m
-LEFT JOIN
-(SELECT PROCEEDING.proceedType, PROCEEDING.pubKey, SUBSTRING_INDEX(SUBSTRING_INDEX(PROCEEDING.pubKey, 'conf/', -1), '/', 1) AS conference FROM PROCEEDING
-WHERE PROCEEDING.proceedType = 'conf') AS p
-USING(pubKey)
-LEFT JOIN
-(SELECT INPROCEEDING.inproCrossref as proceedKey, COUNT(INPROCEEDING.pubKey) as inproCount FROM INPROCEEDING
-GROUP BY proceedKey) AS i
-ON i.proceedKey = p.pubKey
-WHERE inproCount > 200
-GROUP BY p.conference;
-
-
 -- Question 3 a
 -- X(author) = "Mohamed-Slim Alouini"
 SELECT PUBLICATION.pubKey, pubTitle, pubYear, pubMdate, pubType, publisherId, CONCAT(PERSON.personFirstName, " ", PERSON.personLastName) as pubAuthor
@@ -43,7 +28,7 @@ AND PUBLICATION.pubYear = 2015
 AND PERSON.personFirstName = "Mohamed-Slim" AND PERSON.personLastName = "Alouini";
 
 -- Question 3 b
--- X(author) = "Mohamed-Slim Alouini", Y(year) = 2015, Z(conference) = "icc"
+-- X(author) = "Alexander Sprintson", Y(year) = 2015, Z(conference) = "allerton"
 SELECT * FROM (
 	SELECT INPROCEEDING.pubKey, pubTitle, pubYear, pubMdate, pubType,
 	CONCAT(PERSON.personFirstName, " ", PERSON.personLastName) as pubAuthor,
@@ -53,10 +38,10 @@ SELECT * FROM (
 	AND INPROCEEDING.pubKey = AUTHORSHIP.pubKey
 	AND AUTHORSHIP.personKey = PERSON.personKey
 	AND PROCEEDING.pubKey = INPROCEEDING.inproCrossRef
-	AND PERSON.personFirstName = "Mohamed-Slim" AND PERSON.personLastName = "Alouini"
+	AND PERSON.personFirstName = "Alexander" AND PERSON.personLastName = "Sprintson"
 	AND PUBLICATION.pubYear = 2015
 ) AS AUTHOR_PUBLICATIONS
-WHERE conference = "icc";
+WHERE conference = "allerton";
 
 -- Question 3 c
 -- Z(conference) = "sigmod", Y(year) = 2014
@@ -167,7 +152,7 @@ PUBLICATION
 USING (pubKey)
 WHERE pubCount > 100;
 
--- Question 9
+-- Question 9 a
 SELECT CONCAT(PERSON.personFirstName, " ", PERSON.personLastName) AS pubAuthor, yearCount FROM
 (SELECT personKey, COUNT(*) AS yearCount FROM
 (SELECT DISTINCT personKey, pubYear FROM PUBLICATION
@@ -179,3 +164,24 @@ GROUP BY personKey
 HAVING yearCount = 30) AS i,
 PERSON
 WHERE PERSON.personKey = i.personKey;
+
+-- Question 9 b
+SELECT CONCAT(PERSON.personFirstName, " ", PERSON.personLastName) AS pubAuthor,
+COUNT(*) AS pubCount FROM
+AUTHORSHIP, PUBLICATION, PERSON,
+(SELECT DISTINCT AUTHORSHIP.personKey
+FROM PUBLICATION, AUTHORSHIP WHERE
+PUBLICATION.pubKey = AUTHORSHIP.pubKey
+AND pubYear = (SELECT MIN(pubYear) FROM PUBLICATION)) AS oldAuthors
+WHERE oldAuthors.personKey = PERSON.personKey
+AND PERSON.personKey = AUTHORSHIP.personKey
+AND AUTHORSHIP.pubKey = PUBLICATION.pubKey
+GROUP BY AUTHORSHIP.personKey;
+
+-- Question 10
+-- Question: List down the TOP 10 publishers that publish the most publications
+SELECT PUBLISHER.publisherName, COUNT(*) AS pubCount
+FROM PUBLICATION, PUBLISHER
+WHERE PUBLICATION.publisherId = PUBLISHER.publisherId
+GROUP BY PUBLISHER.publisherName
+ORDER BY pubCount DESC LIMIT 10;
