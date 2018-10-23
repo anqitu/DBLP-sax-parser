@@ -3,8 +3,6 @@ from xml.sax.handler import ContentHandler
 import xml.sax
 import datetime
 import csv
-import pandas as pd
-import numpy as np
 
 # Configure data path
 xml_path = './data/dblp.xml'
